@@ -3,6 +3,7 @@ import { runDataClean } from './stages/dataClean.js';
 import { runStructuredExtract } from './stages/structuredExtract.js';
 import { runValidateStructured } from './stages/validateStructured.js';
 import { runGenerateReport } from './stages/generateReport.js';
+import { runGenerateDashboard } from './stages/generateDashboard.js';
 
 async function main() {
   const date = new Date();
@@ -11,6 +12,7 @@ async function main() {
   await runStructuredExtract(date);
   await runValidateStructured(date);
   await runGenerateReport(date);
+  await runGenerateDashboard(date);
 }
 
 main().catch((err) => {
