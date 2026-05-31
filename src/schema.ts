@@ -10,6 +10,7 @@ export const StructuredNewsItemSchema = z.object({
   category: z.string(),
   sentiment: z.enum(['positive', 'negative', 'neutral']),
   relevanceScore: z.number(),
+  impact_level: z.enum(['high', 'mid', 'low']),
 });
 
 export type StructuredNewsItem = z.infer<typeof StructuredNewsItemSchema>;

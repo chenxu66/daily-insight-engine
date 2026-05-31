@@ -14,6 +14,7 @@ export interface CleanedNewsItem {
   source: string;
   content: string;
   wordCount: number;
+  score?: number;
 }
 
 export type { StructuredNewsItem } from './schema.js';

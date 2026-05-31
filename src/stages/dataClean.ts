@@ -194,6 +194,7 @@ export async function runDataClean(date: Date = new Date()): Promise<CleanedNews
     source: item.source,
     content: item.content ?? '',
     wordCount: (item.content ?? '').split(/\s+/).filter(Boolean).length,
+    score: item.score,
   }));
 
   const dir = artifactDir(date);
