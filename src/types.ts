@@ -1,16 +1,16 @@
 export interface RawNewsItem {
   title: string;
-  link: string;
-  pubDate: string;
+  url?: string;
+  publishedAt: string;
   source: string;
-  content?: string;
-  summary?: string;
+  content: string | null;
+  score?: number;
 }
 
 export interface CleanedNewsItem {
   title: string;
-  link: string;
-  pubDate: string;
+  url?: string;
+  publishedAt: string;
   source: string;
   content: string;
   wordCount: number;
@@ -18,8 +18,8 @@ export interface CleanedNewsItem {
 
 export interface StructuredNewsItem {
   title: string;
-  link: string;
-  pubDate: string;
+  url?: string;
+  publishedAt: string;
   source: string;
   summary: string;
   keyPoints: string[];
