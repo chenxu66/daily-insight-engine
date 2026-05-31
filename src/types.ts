@@ -16,17 +16,8 @@ export interface CleanedNewsItem {
   wordCount: number;
 }
 
-export interface StructuredNewsItem {
-  title: string;
-  url?: string;
-  publishedAt: string;
-  source: string;
-  summary: string;
-  keyPoints: string[];
-  category: string;
-  sentiment: "positive" | "negative" | "neutral";
-  relevanceScore: number;
-}
+export type { StructuredNewsItem } from './schema.js';
+import type { StructuredNewsItem } from './schema.js';
 
 export interface DailyReport {
   date: string;
