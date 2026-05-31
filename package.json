@@ -1,0 +1,22 @@
+{
+  "name": "daily-insight-engine",
+  "version": "1.0.0",
+  "description": "Daily news insight pipeline powered by Claude AI",
+  "main": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.36.3",
+    "node-fetch": "^3.3.2",
+    "rss-parser": "^3.13.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
