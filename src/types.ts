@@ -18,13 +18,27 @@ export interface CleanedNewsItem {
 }
 
 export type { StructuredNewsItem } from './schema.js';
-import type { StructuredNewsItem } from './schema.js';
+
+export interface EvidencedClaim {
+  text: string;
+  evidence_ids: string[];
+}
+
+export interface EvidenceIndex {
+  evidence_id: string;
+  title: string;
+  source: string;
+  url?: string;
+}
 
 export interface DailyReport {
   date: string;
   generatedAt: string;
   totalArticles: number;
-  topStories: StructuredNewsItem[];
-  categorySummaries: Record<string, string>;
-  executiveSummary: string;
+  evidenceIndex: EvidenceIndex[];
+  executiveSummary: EvidencedClaim;
+  topEvents: Array<{ title: string; analysis: EvidencedClaim }>;
+  trends: EvidencedClaim[];
+  alerts: Array<{ type: 'risk' | 'opportunity'; description: string; evidence_ids: string[] }>;
+  categorySummaries: Record<string, EvidencedClaim>;
 }
