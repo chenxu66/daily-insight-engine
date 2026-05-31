@@ -1,4 +1,4 @@
-import { JSDOM } from 'jsdom';
+import { JSDOM, VirtualConsole } from 'jsdom';
 import { Readability } from '@mozilla/readability';
 import type { RawNewsItem } from '../types.js';
 import { createLogger } from '../util/logger.js';
@@ -34,7 +34,7 @@ async function fetchArticleContent(url: string): Promise<string | null> {
     });
     if (!response.ok) return null;
     const html = await response.text();
-    const dom = new JSDOM(html, { url });
+    const dom = new JSDOM(html, { url, virtualConsole: new VirtualConsole() });
     const reader = new Readability(dom.window.document);
     const article = reader.parse();
     const text = article?.textContent?.trim();

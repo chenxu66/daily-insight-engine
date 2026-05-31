@@ -66,7 +66,8 @@ async function extractChunk(
     messages: [{ role: 'user', content: prompt }],
   });
 
-  const text = response.content[0].type === 'text' ? response.content[0].text.trim() : '[]';
+  const raw = response.content[0].type === 'text' ? response.content[0].text.trim() : '[]';
+  const text = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '').trim();
 
   let parsed: unknown[];
   try {
