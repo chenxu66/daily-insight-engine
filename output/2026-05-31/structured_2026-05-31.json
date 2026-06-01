@@ -1,0 +1,284 @@
+[
+  {
+    "title": "1-Bit Bonsai Image 4B Image Generation for Local Devices",
+    "url": "https://prismml.com/news/bonsai-image-4b",
+    "publishedAt": "2026-05-31T15:04:52.000Z",
+    "source": "HackerNews",
+    "summary": "Prism ML has released Bonsai Image 4B, a compact image-generation model family designed to run diffusion inference on local hardware including laptops and phones. The release includes two variants: a 1-bit version using binary weights (1.125 bits per weight) and a ternary version using three-state weights (1.71 bits per weight), with the model being the first in its parameter class to run directly on an iPhone.",
+    "keyPoints": [
+      "Two variants released: 1-bit binary weights and ternary weights for different compression/quality tradeoffs",
+      "First 4B-class image model capable of running directly on iPhone",
+      "Designed for local deployment with minimal memory footprint and bandwidth requirements",
+      "Uses FP16 group-wise scaling factors to enable extreme compression while maintaining quality",
+      "Open weights model enabling practical on-device image generation"
+    ],
+    "category": "Product Launch",
+    "sentiment": "positive",
+    "relevanceScore": 1,
+    "impact_level": "high"
+  },
+  {
+    "title": "It's Not Just X. It's Y",
+    "url": "https://mail.cyberneticforests.com/its-not-just-data-its-post-training/",
+    "publishedAt": "2026-05-31T21:57:48.000Z",
+    "source": "HackerNews",
+    "summary": "This article examines linguistic patterns commonly produced by Large Language Models, particularly the \"it's not x, it's y\" construction called negative parallelism. The author discusses how LLM-generated text has led to certain writing patterns being flagged as potential bot activity, and questions whether these patterns inherently constitute bad writing or are simply rhetorical devices.",
+    "keyPoints": [
+      "LLMs frequently use negative parallelism and other specific linguistic constructions",
+      "Common LLM patterns include em-dashes, words like 'delve,' 'quietly,' 'genuinely,' and lists of three",
+      "AI detectors now scan for these patterns, leading to a new category of writing analysis tools",
+      "The article argues rhetorical devices are only as good or bad as their content and usage",
+      "Raises concerns about the impact on writing assessment and authenticity detection"
+    ],
+    "category": "Research",
+    "sentiment": "neutral",
+    "relevanceScore": 0.85,
+    "impact_level": "low"
+  },
+  {
+    "title": "Meta launches Instagram, Facebook, and WhatsApp subscriptions",
+    "url": "https://techcrunch.com/2026/05/27/meta-officially-launches-instagram-facebook-and-whatsapp-subscriptions-with-more-to-come-including-ai-plans/",
+    "publishedAt": "2026-05-31T17:02:23.000Z",
+    "source": "HackerNews",
+    "summary": "Meta is rolling out global subscription plans for Instagram ($3.99/mo), Facebook ($3.99/mo), and WhatsApp ($2.99/mo), offering power users additional features like profile customization and story insights. The company is also testing new subscription offerings under the \"Meta One\" brand, including professional plans for creators and businesses, as well as AI-focused plans for all users.",
+    "keyPoints": [
+      "Consumer subscriptions now available globally: Instagram Plus, Facebook Plus, and WhatsApp Plus",
+      "Pricing ranges from $2.99 to $3.99 per month with features like super reactions and story insights",
+      "New \"Meta One\" brand will house all subscription offerings including AI-focused plans",
+      "Testing professional plans for creators and businesses alongside consumer offerings",
+      "Strategy aims to diversify revenue beyond advertising given limited user growth opportunities"
+    ],
+    "category": "Product Launch",
+    "sentiment": "neutral",
+    "relevanceScore": 0.6,
+    "impact_level": "low"
+  },
+  {
+    "title": "Restartable Sequences",
+    "url": "https://justine.lol/rseq/",
+    "publishedAt": "2026-05-31T14:38:48.000Z",
+    "source": "HackerNews",
+    "summary": "Restartable sequences (rseq), a Linux 4.18+ feature, enables thread-safe data structures without locks or atomics that scale to many-core processors. On high-core-count systems like AMD's 96-core Threadripper, rseq makes malloc operations up to 43x faster compared to traditional mutex sharding techniques.",
+    "keyPoints": [
+      "Rseq allows creation of lock-free, atomic-free thread-safe data structures that scale with core count",
+      "Currently only available on Linux through handwritten assembly, used by tcmalloc, jemalloc, glibc, and cosmopolitan",
+      "Performance gains range from 3x on 4-core Raspberry Pi 5 to 43x on 96-core AMD Threadripper",
+      "Expected to become standard across all operating systems and system programming languages as high-core-count processors become common"
+    ],
+    "category": "Research",
+    "sentiment": "positive",
+    "relevanceScore": 0.3,
+    "impact_level": "mid"
+  },
+  {
+    "title": "The Website Specification",
+    "url": "https://specification.website/",
+    "publishedAt": "2026-05-31T07:09:50.000Z",
+    "source": "HackerNews",
+    "summary": "A comprehensive platform-agnostic specification documenting technical features every modern website should implement, covering areas from basic HTML to AI agent readiness. The specification maps to widely-accepted standards from WHATWG, W3C, IETF, and WCAG across ten categories including foundations, SEO, accessibility, and performance.",
+    "keyPoints": [
+      "Covers 128 topics across 10 categories including SEO, accessibility, security, and agent readiness",
+      "Platform-agnostic, applicable to any web technology stack from WordPress to static site generators",
+      "Each topic links back to source standards from WHATWG, W3C, IETF RFCs, and WCAG",
+      "Includes modern considerations like llms.txt for AI agent compatibility",
+      "Built in the open with collaborative editing capabilities"
+    ],
+    "category": "Industry News",
+    "sentiment": "positive",
+    "relevanceScore": 0.5,
+    "impact_level": "high"
+  },
+  {
+    "title": "ChatGPT for Google Sheets is vulnerable to data exfiltration and phishing",
+    "url": "https://www.promptarmor.com/resources/gpt-for-google-sheets-data-exfiltration",
+    "publishedAt": "2026-05-31T20:35:38.000Z",
+    "source": "HackerNews",
+    "summary": "OpenAI's ChatGPT extension for Google Sheets, with over 185,000 downloads, contains critical vulnerabilities allowing indirect prompt injection attacks. A single malicious query can exfiltrate workbooks, display phishing pop-ups, and make unauthorized edits without requiring human approval, even when explicitly configured to do so.",
+    "keyPoints": [
+      "Indirect prompt injection attack can exfiltrate multiple workbooks and display phishing interfaces",
+      "Attack bypasses user-configured human approval requirements for workbook edits",
+      "Vulnerability exploits permissions granted to the ChatGPT extension to run external scripts",
+      "OpenAI provided no substantive response to responsible disclosure beyond automated reply",
+      "Affects extension with 185,000+ downloads launched less than a month ago"
+    ],
+    "category": "Policy",
+    "sentiment": "negative",
+    "relevanceScore": 0.95,
+    "impact_level": "low"
+  },
+  {
+    "title": "Websites have a new way to spy on visitors: analyzing their SSD activity",
+    "url": "https://arstechnica.com/security/2026/05/websites-have-a-new-way-to-spy-on-visitors-analyzing-their-ssd-activity/",
+    "publishedAt": "2026-05-28T14:32:01.000Z",
+    "source": "HackerNews",
+    "summary": "Researchers have discovered a new web tracking technique called FROST that uses JavaScript to measure SSD I/O interactions through the Origin Private File System (OPFS). By analyzing latency patterns with a pretrained convolutional neural network, attackers can fingerprint user activity and deduce which apps and websites are open on a device.",
+    "keyPoints": [
+      "FROST attack uses JavaScript to measure SSD contention through OPFS files and identify open apps/websites",
+      "Technique employs convolutional neural networks (CNNs) to classify user activity from I/O trace patterns",
+      "Attack requires extremely large OPFS files (1GB+) and only works on the same SSD where browser data is stored",
+      "Mitigation includes closing unused tabs and monitoring OPFS file creation by unknown websites"
+    ],
+    "category": "Research",
+    "sentiment": "negative",
+    "relevanceScore": 0.85,
+    "impact_level": "low"
+  },
+  {
+    "title": "'Backrooms' Stuns with $81M Debut",
+    "url": "https://variety.com/2026/film/box-office/backrooms-box-office-record-breaking-opening-weekend-obsession-jumps-star-wars-crumbles-1236763355/",
+    "publishedAt": "2026-05-31T19:27:44.000Z",
+    "source": "HackerNews",
+    "summary": "A24's 'Backrooms,' directed by 20-year-old YouTube creator Kane Parsons, opened with a record-breaking $81 million in its debut weekend, grossing $118 million total. The low-budget horror film directed by a YouTube star outperformed major franchises, demonstrating Gen Z's strong appetite for indie horror content.",
+    "keyPoints": [
+      "Backrooms earned $81M opening weekend and $118M total, setting box office records",
+      "Film was directed by 20-year-old YouTuber Kane Parsons and cost nearly nothing to produce",
+      "Gen Z audiences drove success of two indie horror films, both directed by YouTube creators",
+      "Disney's 'The Mandalorian and Grogu' suffered 70% drop in second weekend, falling to third place",
+      "Success signals new audience demand for indie content over traditional summer blockbusters"
+    ],
+    "category": "Industry News",
+    "sentiment": "positive",
+    "relevanceScore": 0.15,
+    "impact_level": "mid"
+  },
+  {
+    "title": "Backpressure is all you need",
+    "url": "https://www.lucasfcosta.com/blog/backpressure-is-all-you-need",
+    "publishedAt": "2026-05-31T12:11:27.000Z",
+    "source": "HackerNews",
+    "summary": "The article proposes a third approach to using AI coding agents that balances automation with safety by implementing backpressure mechanisms. Rather than running agents completely unattended or reviewing every minor step, the approach builds validation systems that allow agents to check their own work before human review.",
+    "keyPoints": [
+      "Traditional approaches either let LLMs run unattended (dangerous) or require human review of every step (slow)",
+      "Proposed solution uses backpressure: agents validate their own work before human intervention",
+      "Backpressure mechanism signals upstream components to slow down when downstream can't handle load",
+      "Goal is to enable longer safe unattended sessions while reducing low-quality PR submissions",
+      "Applies systems engineering concepts to AI agent workflows for better quality control"
+    ],
+    "category": "Research",
+    "sentiment": "neutral",
+    "relevanceScore": 0.95,
+    "impact_level": "mid"
+  },
+  {
+    "title": "Odysseus – self-hosted AI workspace",
+    "url": "https://github.com/pewdiepie-archdaemon/odysseus",
+    "publishedAt": "2026-05-31T15:50:34.000Z",
+    "source": "HackerNews",
+    "summary": "Odysseus is an open-source, self-hosted AI workspace designed to replicate the UI experience of ChatGPT and Claude while running locally. It offers features including chat with multiple AI models, autonomous agents with tool access, model recommendations based on hardware, deep research capabilities, and document editing with AI assistance.",
+    "keyPoints": [
+      "Self-hosted alternative to ChatGPT/Claude with local-first, privacy-focused design",
+      "Supports multiple AI backends including vLLM, llama.cpp, Ollama, OpenRouter, and OpenAI",
+      "Features autonomous agents with MCP tool support, shell access, and persistent memory",
+      "Includes hardware-aware model recommendations and automatic serving setup",
+      "Provides deep research, model comparison, document editing, and email triage capabilities"
+    ],
+    "category": "Product Launch",
+    "sentiment": "positive",
+    "relevanceScore": 0.95,
+    "impact_level": "low"
+  },
+  {
+    "title": "FROST: Fingerprinting Remotely using OPFS-based SSD Timing [pdf]",
+    "url": "https://hannesweissteiner.com/pdfs/frost.pdf",
+    "publishedAt": "2026-05-31T14:10:36.000Z",
+    "source": "HackerNews",
+    "summary": "FROST is a research paper presenting a novel browser fingerprinting technique that exploits SSD timing characteristics through the Origin Private File System (OPFS) API. The technique allows remote tracking of users based on hardware-specific storage performance patterns.",
+    "keyPoints": [
+      "Novel fingerprinting method using OPFS-based SSD timing analysis",
+      "Exploits hardware-specific storage performance characteristics for user tracking",
+      "Privacy and security research relevant to web browsers and user anonymity",
+      "Demonstrates potential vulnerabilities in browser privacy protections"
+    ],
+    "category": "Research",
+    "sentiment": "neutral",
+    "relevanceScore": 0.35,
+    "impact_level": "low"
+  },
+  {
+    "title": "帮Gemini拿下IMO金牌的关键先生，差点成了职业钢琴家",
+    "url": "https://www.qbitai.com/2026/05/426706.html",
+    "publishedAt": "2026-05-30T06:43:26.000Z",
+    "source": "qbitai",
+    "summary": "This article profiles a key figure behind Gemini's achievement of winning an IMO (International Mathematical Olympiad) gold medal, who nearly became a professional pianist. The piece highlights the intersection of diverse talents in AI research leadership.",
+    "keyPoints": [
+      "Features the person instrumental in Gemini's IMO gold medal achievement",
+      "Subject nearly pursued a professional career as a pianist before entering AI",
+      "Described as possibly the best piano player in the large language model community",
+      "Highlights the diverse backgrounds of AI researchers and their contributions to major breakthroughs"
+    ],
+    "category": "Industry News",
+    "sentiment": "positive",
+    "relevanceScore": 0.75,
+    "impact_level": "mid"
+  },
+  {
+    "title": "The Speed of Prototyping in the Age of AI",
+    "url": "https://darylcecile.net/notes/speed-of-prototyping-age-of-ai",
+    "publishedAt": "2026-05-31T16:37:34.000Z",
+    "source": "HackerNews",
+    "summary": "A developer reflects on how AI has dramatically accelerated their prototyping workflow over the past year. The traditional bottlenecks of scaffolding projects and setting up infrastructure have largely disappeared, enabling rapid progression from idea to working prototype.",
+    "keyPoints": [
+      "AI has eliminated the time-consuming scaffolding and setup phases of prototyping",
+      "Recent projects include Sakoa (a progressive systems language), Kato (a notation language), and Seal (a CLI tool)",
+      "The author maintains a cautious but pragmatic approach to AI integration in development workflows",
+      "Transition from 'I wonder if...' to 'oh, it works' has become significantly faster",
+      "Personal workflow has fundamentally shifted over the past year due to AI tooling"
+    ],
+    "category": "Industry News",
+    "sentiment": "positive",
+    "relevanceScore": 0.95,
+    "impact_level": "low"
+  },
+  {
+    "title": "Token贵只因你喂给模型的垃圾太多了丨@亚马逊王晓野AIGC2026",
+    "url": "https://www.qbitai.com/2026/05/426970.html",
+    "publishedAt": "2026-05-31T10:03:40.000Z",
+    "source": "qbitai",
+    "summary": "Amazon's Wang Xiaoye discusses token cost optimization at AIGC2026 conference. The presentation focuses on how feeding excessive or irrelevant data to models drives up token costs and explores world models advancing toward multi-agent interactive simulation.",
+    "keyPoints": [
+      "High token costs are primarily caused by feeding models excessive or irrelevant data",
+      "Discussion centered on optimizing input data quality to reduce costs",
+      "World models are progressing toward multi-agent interaction and simulation capabilities",
+      "Presented at AIGC2026 conference by Amazon representative Wang Xiaoye"
+    ],
+    "category": "Research",
+    "sentiment": "neutral",
+    "relevanceScore": 0.9,
+    "impact_level": "mid"
+  },
+  {
+    "title": "AI原生时代下，让世界适应Agent，而非教AI做人 | 港大黄超@AIGC2026",
+    "url": "https://www.qbitai.com/2026/05/426819.html",
+    "publishedAt": "2026-05-31T03:54:27.000Z",
+    "source": "qbitai",
+    "summary": "Hong Kong University's Huang Chao argues at AIGC2026 that in the AI-native era, we should adapt the world to agents rather than forcing AI to conform to human workflows. The presentation highlights that CLI (Command Line Interface) is more like the native language of agents.",
+    "keyPoints": [
+      "Proposes adapting environments to AI agents rather than forcing AI to mimic human behavior",
+      "CLI interfaces are identified as the 'native language' of AI agents",
+      "Presented by Huang Chao from Hong Kong University at AIGC2026",
+      "Represents a paradigm shift in human-AI interaction philosophy",
+      "Focuses on AI-native design principles for the emerging agent era"
+    ],
+    "category": "Research",
+    "sentiment": "neutral",
+    "relevanceScore": 0.92,
+    "impact_level": "mid"
+  },
+  {
+    "title": "从Token无上限到全员Agent：MiniMax的AI Native组织进化实践",
+    "url": "https://www.qbitai.com/2026/05/426793.html",
+    "publishedAt": "2026-05-31T01:29:42.000Z",
+    "source": "qbitai",
+    "summary": "MiniMax分享其组织内部AI原生化转型实践，从无限制Token使用到全员Agent应用的演进过程。文章探讨企业如何适应AI技术并将其深度整合到组织运作中。",
+    "keyPoints": [
+      "MiniMax实施Token无上限使用政策，降低AI应用门槛",
+      "推动全员Agent化，将AI工具深度整合到日常工作流程",
+      "提出AI Native组织转型实践经验和方法论",
+      "倡导拥抱AI而非抗拒技术变革的组织文化"
+    ],
+    "category": "Industry News",
+    "sentiment": "positive",
+    "relevanceScore": 0.85,
+    "impact_level": "mid"
+  }
+]

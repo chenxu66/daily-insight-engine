@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily AI Report — 2026-05-31</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 24px 0 16px;
+    }
+    header h1 { font-size: 2rem; margin: 0; color: #16213e; }
+    header p { color: #666; margin: 6px 0 0; font-size: 0.95rem; }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+    .chart-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .chart-card.full-width { grid-column: 1 / -1; }
+    .chart-card h2 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #888;
+      margin: 0 0 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    #chart-tags { display: block; width: 100%; height: 300px; }
+    #chart-region, #chart-sentiment { max-height: 280px; }
+    .events-section {
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+    .events-section > h2 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 16px;
+    }
+    #cards-top-events {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .event-card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .card-header h3 {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin: 0;
+      color: #16213e;
+      flex: 1;
+      line-height: 1.4;
+    }
+    .badge {
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+      align-self: flex-start;
+    }
+    .badge-positive { background: #d4edda; color: #155724; }
+    .badge-negative { background: #f8d7da; color: #721c24; }
+    .badge-neutral  { background: #e2e3e5; color: #383d41; }
+    .badge-high { background: #fff3cd; color: #856404; }
+    .badge-mid  { background: #cce5ff; color: #004085; }
+    .badge-low  { background: #d1ecf1; color: #0c5460; }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .card-category {
+      font-size: 0.72rem;
+      color: #888;
+    }
+    .card-summary {
+      font-size: 0.84rem;
+      color: #555;
+      line-height: 1.55;
+      margin: 0;
+      flex: 1;
+    }
+    .card-link {
+      font-size: 0.78rem;
+      color: #4361ee;
+      margin-top: 12px;
+      display: inline-block;
+      text-decoration: none;
+    }
+    .card-link:hover { text-decoration: underline; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+      font-size: 1.1rem;
+    }
+  
+    /* Report layout */
+    .report-section {
+      max-width: 1200px;
+      margin: 0 auto 32px;
+      background: white;
+      border-radius: 12px;
+      padding: 32px 36px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .report-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #16213e;
+      margin: 0 0 22px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f2f5;
+    }
+    .report-content p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #333;
+      margin: 0 0 14px;
+    }
+    .report-content p:last-child { margin-bottom: 0; }
+    .ev-badge {
+      display: inline-block;
+      font-size: 0.67rem;
+      font-weight: 700;
+      background: #e8eeff;
+      color: #3f37c9;
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 3px;
+      text-decoration: none;
+      vertical-align: middle;
+    }
+    .ev-badge:hover { background: #d0d8ff; }
+    .report-event {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+    .report-event:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .report-event h3 { font-size: 1rem; font-weight: 600; color: #16213e; margin: 0 0 8px; }
+    .embedded-charts-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 28px 0 14px;
+    }
+    .report-trend {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .trend-num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      background: #4361ee;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .report-trend div p { margin: 0 0 8px; }
+    .report-trend div p:last-child { margin: 0; }
+    .report-alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .alert-tag {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 3px;
+    }
+    .alert-risk .alert-tag { background: #f8d7da; color: #721c24; }
+    .alert-opportunity .alert-tag { background: #d4edda; color: #155724; }
+    .report-alert p { margin: 0; font-size: 0.92rem; line-height: 1.65; color: #333; }
+    .report-category { margin-bottom: 22px; }
+    .report-category:last-child { margin-bottom: 0; }
+    .report-category h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #16213e;
+      margin: 0 0 6px;
+    }
+    .report-category p { margin: 0; font-size: 0.9rem; line-height: 1.65; color: #555; }
+    .evidence-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .evidence-table th {
+      background: #f0f2f5;
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 700;
+      color: #555;
+    }
+    .evidence-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0f2f5;
+      vertical-align: top;
+    }
+    .evidence-table tr:last-child td { border-bottom: none; }
+    .ev-id { font-weight: 700; color: #4361ee; white-space: nowrap; }
+    .evidence-table a { color: #4361ee; text-decoration: none; }
+    .evidence-table a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Daily AI Insight Report</h1>
+    <p>2026-05-31 &middot; 16 articles analyzed</p>
+  </header>
+
+  
+  <section class="report-section" id="section-summary">
+    <h2>Executive Summary</h2>
+    <div class="report-content">
+      <p>May 31, 2026 marks a pivotal moment in AI&#39;s democratization and practical integration. The day&#39;s most significant development is the release of Bonsai Image 4B, the first 4-billion parameter image generation model capable of running directly on consumer devices like iPhones through extreme 1-bit quantization techniques. This breakthrough in on-device AI represents a fundamental shift from cloud-dependent to edge-native AI capabilities. Meanwhile, critical security vulnerabilities continue to emerge as AI integrates deeper into everyday tools—OpenAI&#39;s ChatGPT extension for Google Sheets demonstrates exploitable indirect prompt injection attacks affecting 185,000+ users, while researchers unveiled FROST, a novel SSD-based browser fingerprinting technique. The AI-native organizational transformation is accelerating, with conference discussions highlighting how enterprises should adapt environments to AI agents rather than forcing AI to conform to human workflows, and how token optimization through better data quality can dramatically reduce operational costs. <a href="#ev-e001" class="ev-badge">e001</a><a href="#ev-e006" class="ev-badge">e006</a><a href="#ev-e007" class="ev-badge">e007</a><a href="#ev-e015" class="ev-badge">e015</a><a href="#ev-e014" class="ev-badge">e014</a></p>
+    </div>
+  </section>
+  
+  <section class="report-section" id="section-events">
+    <h2>In-Depth Analysis</h2>
+    <div class="report-content">
+    <div class="report-event">
+      <h3>Breakthrough in On-Device AI: 1-Bit Bonsai Image 4B Enables iPhone Image Generation</h3>
+      <p>Prism ML&#39;s release of Bonsai Image 4B represents a watershed moment for edge AI deployment. By achieving extreme compression through binary and ternary weight quantization (1.125 to 1.71 bits per weight), the model becomes the first in its 4-billion parameter class to run directly on smartphones. This breakthrough addresses three critical barriers to AI democratization: dependency on cloud infrastructure, privacy concerns around data transmission, and accessibility for users with limited connectivity. The technical achievement of maintaining quality while reducing model size by over 10x compared to traditional FP16 weights has immediate implications for privacy-sensitive applications, offline AI capabilities, and reducing the environmental footprint of AI inference. This positions consumer devices as first-class AI platforms rather than thin clients to cloud services. <a href="#ev-e001" class="ev-badge">e001</a></p>
+    </div>
+    <div class="report-event">
+      <h3>Critical Security Flaw in OpenAI&#39;s Google Sheets Extension Exposes 185,000+ Users</h3>
+      <p>The discovery of indirect prompt injection vulnerabilities in OpenAI&#39;s ChatGPT extension for Google Sheets reveals systemic security challenges as AI integrates into productivity tools. The vulnerability allows attackers to exfiltrate entire workbooks, display phishing interfaces, and make unauthorized edits even when users have explicitly configured human approval requirements. With over 185,000 downloads in less than a month, the attack surface is substantial. More concerning is OpenAI&#39;s lack of substantive response to responsible disclosure, suggesting potential gaps in security review processes for AI-integrated products. This incident highlights a broader industry challenge: traditional security models are insufficient for AI-powered applications where natural language becomes an attack vector, and the gap between rapid feature deployment and security hardening poses significant risks to enterprise adoption. <a href="#ev-e006" class="ev-badge">e006</a></p>
+    </div>
+    <div class="report-event">
+      <h3>Meta&#39;s Subscription Strategy Signals Platform Revenue Diversification</h3>
+      <p>Meta&#39;s global rollout of Instagram Plus, Facebook Plus, and WhatsApp Plus subscriptions, combined with testing of the &#39;Meta One&#39; brand encompassing AI-focused and professional plans, represents a strategic pivot in response to limited user growth opportunities. The pricing structure ($2.99-$3.99/month) and feature set (profile customization, story insights, super reactions) targets power users while the planned AI subscription tier suggests Meta is positioning AI capabilities as a premium value proposition. This move reflects broader industry recognition that advertising-only models face headwinds, and AI features provide justification for recurring revenue streams. The bundling approach under Meta One could create ecosystem lock-in effects, though success depends on whether the feature differentiation justifies subscription costs to users accustomed to free access. <a href="#ev-e003" class="ev-badge">e003</a></p>
+    </div>
+    <div class="report-event">
+      <h3>AI-Native Development Workflows Accelerate Prototyping Velocity</h3>
+      <p>Developer reports of dramatically accelerated prototyping workflows, progressing rapidly through projects like Sakoa, Kato, and Seal, demonstrate how AI is fundamentally reshaping software development velocity. The elimination of traditional scaffolding and setup bottlenecks represents more than incremental improvement—it changes the economics of experimentation by reducing the cost of testing ideas. This acceleration has implications for innovation cycles, competitive dynamics, and the skills required for effective development. The transition from &#39;I wonder if...&#39; to &#39;oh, it works&#39; occurring in compressed timeframes means more ideas can be validated, but also raises questions about code quality, technical debt, and the long-term maintainability of rapidly prototyped systems. The author&#39;s cautious pragmatism suggests successful integration requires deliberate workflow design rather than uncritical adoption. <a href="#ev-e013" class="ev-badge">e013</a></p>
+    </div>
+    <div class="report-event">
+      <h3>New Browser Fingerprinting Technique Exploits SSD Timing Characteristics</h3>
+      <p>The FROST attack demonstrates how browser privacy protections can be circumvented through hardware-level side channels. By using JavaScript to measure SSD I/O interactions through the Origin Private File System (OPFS) and analyzing latency patterns with convolutional neural networks, attackers can fingerprint user activity and deduce which apps and websites are open on a device. While the attack requires large OPFS files (1GB+) and only works on the same SSD as browser data, it represents a new category of privacy threat that exploits the intersection of browser APIs and hardware characteristics. This technique is particularly concerning because it operates within the browser&#39;s sandboxed environment, bypassing traditional privacy protections. Mitigation strategies like monitoring OPFS file creation and closing unused tabs are reactive rather than preventive, suggesting browser vendors may need to impose stricter limits on OPFS file sizes or introduce artificial timing noise. <a href="#ev-e007" class="ev-badge">e007</a><a href="#ev-e011" class="ev-badge">e011</a></p>
+    </div></div>
+    <div class="embedded-charts-label">Top Events at a Glance</div>
+    <div id="cards-top-events"></div>
+  </section>
+  
+  <section class="report-section" id="section-trends">
+    <h2>Emerging Trends</h2>
+    <div class="report-content">
+    <div class="report-trend">
+      <span class="trend-num">1</span>
+      <div><p>Edge AI and extreme quantization techniques are enabling practical on-device deployment of large models. The success of 1-bit and ternary weight quantization in Bonsai Image 4B demonstrates that quality can be maintained while achieving over 10x compression, fundamentally shifting the economics of AI deployment from cloud to edge. <a href="#ev-e001" class="ev-badge">e001</a></p></div>
+    </div>
+    <div class="report-trend">
+      <span class="trend-num">2</span>
+      <div><p>Security vulnerabilities in AI-integrated applications are emerging faster than security practices can adapt. Indirect prompt injection attacks on productivity tools and novel hardware-based fingerprinting techniques reveal that traditional security models are insufficient for AI-native applications, requiring new paradigms for threat modeling and defense. <a href="#ev-e006" class="ev-badge">e006</a><a href="#ev-e007" class="ev-badge">e007</a><a href="#ev-e011" class="ev-badge">e011</a></p></div>
+    </div>
+    <div class="report-trend">
+      <span class="trend-num">3</span>
+      <div><p>Platform companies are diversifying revenue beyond advertising through AI-powered subscription tiers. Meta&#39;s global subscription rollout and AI-focused plans reflect industry-wide recognition that AI capabilities can justify premium pricing while addressing user growth saturation in mature markets. <a href="#ev-e003" class="ev-badge">e003</a></p></div>
+    </div>
+    <div class="report-trend">
+      <span class="trend-num">4</span>
+      <div><p>The AI-native organizational transformation philosophy is shifting from &#39;teaching AI to be human&#39; toward &#39;adapting environments for AI agents.&#39; Conference discussions emphasize that CLI interfaces represent the native language of agents and that organizations should optimize workflows for AI capabilities rather than forcing AI to mimic human processes. <a href="#ev-e015" class="ev-badge">e015</a><a href="#ev-e016" class="ev-badge">e016</a></p></div>
+    </div>
+    <div class="report-trend">
+      <span class="trend-num">5</span>
+      <div><p>AI development tooling is fundamentally accelerating prototyping workflows and changing the economics of experimentation. Developers report elimination of traditional scaffolding bottlenecks and dramatically compressed timelines from concept to working prototype, enabling higher volumes of idea validation but raising questions about code quality and technical debt. <a href="#ev-e013" class="ev-badge">e013</a><a href="#ev-e009" class="ev-badge">e009</a></p></div>
+    </div></div>
+    <div class="chart-card full-width">
+      <h2>Tags &amp; Industries</h2>
+      <canvas id="chart-tags"></canvas>
+    </div>
+  </section>
+  
+  <section class="report-section" id="section-alerts">
+    <h2>Risks &amp; Opportunities</h2>
+    <div class="report-content">
+    <div class="report-alert alert-risk">
+      <span class="alert-tag">Risk</span>
+      <p>Critical security vulnerability in OpenAI&#39;s ChatGPT Google Sheets extension (185,000+ users) allows indirect prompt injection attacks that can exfiltrate workbooks and display phishing interfaces, bypassing user-configured approval settings. OpenAI&#39;s lack of substantive response to responsible disclosure raises concerns about security practices in rapidly deployed AI integrations. <a href="#ev-e006" class="ev-badge">e006</a></p>
+    </div>
+    <div class="report-alert alert-risk">
+      <span class="alert-tag">Risk</span>
+      <p>FROST browser fingerprinting technique exploits SSD timing characteristics through OPFS to track users and deduce open applications, representing a new privacy threat that operates within browser sandboxes and bypasses traditional privacy protections. Current mitigation strategies are reactive rather than preventive. <a href="#ev-e007" class="ev-badge">e007</a><a href="#ev-e011" class="ev-badge">e011</a></p>
+    </div>
+    <div class="report-alert alert-opportunity">
+      <span class="alert-tag">Opportunity</span>
+      <p>Edge AI deployment market opportunity emerging from extreme quantization breakthroughs. The ability to run 4B-parameter image generation models on consumer devices like iPhones opens new markets for privacy-focused, offline-capable AI applications with reduced infrastructure costs and environmental footprint. <a href="#ev-e001" class="ev-badge">e001</a></p>
+    </div>
+    <div class="report-alert alert-opportunity">
+      <span class="alert-tag">Opportunity</span>
+      <p>Token cost optimization through data quality improvement represents significant operational efficiency gains. Enterprise focus on feeding models higher-quality, relevant data rather than excessive information can dramatically reduce AI operating costs while improving output quality. <a href="#ev-e014" class="ev-badge">e014</a></p>
+    </div>
+    <div class="report-alert alert-opportunity">
+      <span class="alert-tag">Opportunity</span>
+      <p>AI-native workflow transformation enables 10-100x acceleration in prototyping and development cycles. Organizations that successfully integrate AI coding agents with appropriate backpressure mechanisms and validation systems can achieve competitive advantages through faster innovation cycles and reduced development costs. <a href="#ev-e013" class="ev-badge">e013</a><a href="#ev-e009" class="ev-badge">e009</a></p>
+    </div></div>
+    <div class="charts-grid">
+      <div class="chart-card">
+      <h2>Region Distribution</h2>
+      <canvas id="chart-region"></canvas>
+    </div>
+      <div class="chart-card">
+      <h2>Sentiment Distribution</h2>
+      <canvas id="chart-sentiment"></canvas>
+    </div>
+    </div>
+  </section>
+  
+  <section class="report-section" id="section-categories">
+    <h2>Category Summaries</h2>
+    <div class="report-content">
+    <div class="report-category">
+      <h3>Product Launch</h3>
+      <p>Product launches demonstrate the dual trends of edge AI democratization and platform revenue diversification. Bonsai Image 4B achieves breakthrough on-device inference through extreme 1-bit quantization, enabling the first iPhone-native 4B-parameter image generation. Meta&#39;s global subscription rollout for Instagram, Facebook, and WhatsApp ($2.99-$3.99/month) with planned &#39;Meta One&#39; AI-focused tiers represents platform monetization evolution beyond advertising. Odysseus offers a self-hosted AI workspace alternative to ChatGPT/Claude, emphasizing privacy-first, local-first design with support for multiple AI backends and autonomous agents. <a href="#ev-e001" class="ev-badge">e001</a><a href="#ev-e003" class="ev-badge">e003</a><a href="#ev-e010" class="ev-badge">e010</a></p>
+    </div>
+    <div class="report-category">
+      <h3>Research</h3>
+      <p>Research developments span security vulnerabilities, system optimization, and philosophical approaches to AI integration. FROST demonstrates novel browser fingerprinting via SSD timing analysis through OPFS, while restartable sequences (rseq) enable lock-free data structures with 3-43x performance improvements on multi-core systems. Analysis of LLM linguistic patterns explores how AI-generated writing creates new categories of detection tools and impacts writing assessment. The backpressure approach to AI coding agents proposes validation mechanisms that balance automation with safety. Token cost optimization research emphasizes data quality over quantity, while AI-native design philosophy advocates adapting environments to agents rather than forcing human-like behavior. <a href="#ev-e007" class="ev-badge">e007</a><a href="#ev-e011" class="ev-badge">e011</a><a href="#ev-e004" class="ev-badge">e004</a><a href="#ev-e002" class="ev-badge">e002</a><a href="#ev-e009" class="ev-badge">e009</a><a href="#ev-e014" class="ev-badge">e014</a><a href="#ev-e015" class="ev-badge">e015</a></p>
+    </div>
+    <div class="report-category">
+      <h3>Industry News</h3>
+      <p>Industry developments highlight AI&#39;s expanding impact across entertainment, organizational transformation, and development practices. The &#39;Backrooms&#39; horror film achieved a record $81M opening weekend, demonstrating Gen Z&#39;s appetite for indie content from YouTube creators and signaling shifting audience preferences. The Website Specification provides a comprehensive platform-agnostic standard covering 128 topics from HTML basics to AI agent readiness. Developer reflections show AI has fundamentally accelerated prototyping workflows by eliminating scaffolding bottlenecks. MiniMax&#39;s organizational evolution from unlimited token usage to full-staff agent deployment exemplifies AI-native transformation practices. Conference coverage profiles diverse backgrounds in AI leadership and discusses multi-agent simulation advances in world models. <a href="#ev-e008" class="ev-badge">e008</a><a href="#ev-e005" class="ev-badge">e005</a><a href="#ev-e013" class="ev-badge">e013</a><a href="#ev-e016" class="ev-badge">e016</a><a href="#ev-e012" class="ev-badge">e012</a><a href="#ev-e014" class="ev-badge">e014</a></p>
+    </div>
+    <div class="report-category">
+      <h3>Policy</h3>
+      <p>Policy concerns center on security vulnerabilities in AI-integrated productivity tools. OpenAI&#39;s ChatGPT extension for Google Sheets, with 185,000+ downloads, contains critical indirect prompt injection flaws allowing data exfiltration and phishing attacks that bypass user-configured approval requirements. The lack of substantive response to responsible disclosure highlights gaps in security review processes for rapidly deployed AI products, raising questions about regulatory oversight and vendor accountability for AI-powered applications. <a href="#ev-e006" class="ev-badge">e006</a></p>
+    </div></div>
+  </section>
+  
+  <section class="report-section" id="section-evidence">
+    <h2>Evidence Index</h2>
+    <table class="evidence-table">
+      <thead>
+        <tr><th>ID</th><th>Title</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+    <tr id="ev-e001">
+      <td class="ev-id">e001</td>
+      <td><a href="https://prismml.com/news/bonsai-image-4b" target="_blank" rel="noopener noreferrer">1-Bit Bonsai Image 4B Image Generation for Local Devices</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e002">
+      <td class="ev-id">e002</td>
+      <td><a href="https://mail.cyberneticforests.com/its-not-just-data-its-post-training/" target="_blank" rel="noopener noreferrer">It&#39;s Not Just X. It&#39;s Y</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e003">
+      <td class="ev-id">e003</td>
+      <td><a href="https://techcrunch.com/2026/05/27/meta-officially-launches-instagram-facebook-and-whatsapp-subscriptions-with-more-to-come-including-ai-plans/" target="_blank" rel="noopener noreferrer">Meta launches Instagram, Facebook, and WhatsApp subscriptions</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e004">
+      <td class="ev-id">e004</td>
+      <td><a href="https://justine.lol/rseq/" target="_blank" rel="noopener noreferrer">Restartable Sequences</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e005">
+      <td class="ev-id">e005</td>
+      <td><a href="https://specification.website/" target="_blank" rel="noopener noreferrer">The Website Specification</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e006">
+      <td class="ev-id">e006</td>
+      <td><a href="https://www.promptarmor.com/resources/gpt-for-google-sheets-data-exfiltration" target="_blank" rel="noopener noreferrer">ChatGPT for Google Sheets is vulnerable to data exfiltration and phishing</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e007">
+      <td class="ev-id">e007</td>
+      <td><a href="https://arstechnica.com/security/2026/05/websites-have-a-new-way-to-spy-on-visitors-analyzing-their-ssd-activity/" target="_blank" rel="noopener noreferrer">Websites have a new way to spy on visitors: analyzing their SSD activity</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e008">
+      <td class="ev-id">e008</td>
+      <td><a href="https://variety.com/2026/film/box-office/backrooms-box-office-record-breaking-opening-weekend-obsession-jumps-star-wars-crumbles-1236763355/" target="_blank" rel="noopener noreferrer">&#39;Backrooms&#39; Stuns with $81M Debut</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e009">
+      <td class="ev-id">e009</td>
+      <td><a href="https://www.lucasfcosta.com/blog/backpressure-is-all-you-need" target="_blank" rel="noopener noreferrer">Backpressure is all you need</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e010">
+      <td class="ev-id">e010</td>
+      <td><a href="https://github.com/pewdiepie-archdaemon/odysseus" target="_blank" rel="noopener noreferrer">Odysseus – self-hosted AI workspace</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e011">
+      <td class="ev-id">e011</td>
+      <td><a href="https://hannesweissteiner.com/pdfs/frost.pdf" target="_blank" rel="noopener noreferrer">FROST: Fingerprinting Remotely using OPFS-based SSD Timing [pdf]</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e012">
+      <td class="ev-id">e012</td>
+      <td><a href="https://www.qbitai.com/2026/05/426706.html" target="_blank" rel="noopener noreferrer">帮Gemini拿下IMO金牌的关键先生，差点成了职业钢琴家</a></td>
+      <td>qbitai</td>
+    </tr>
+    <tr id="ev-e013">
+      <td class="ev-id">e013</td>
+      <td><a href="https://darylcecile.net/notes/speed-of-prototyping-age-of-ai" target="_blank" rel="noopener noreferrer">The Speed of Prototyping in the Age of AI</a></td>
+      <td>HackerNews</td>
+    </tr>
+    <tr id="ev-e014">
+      <td class="ev-id">e014</td>
+      <td><a href="https://www.qbitai.com/2026/05/426970.html" target="_blank" rel="noopener noreferrer">Token贵只因你喂给模型的垃圾太多了丨@亚马逊王晓野AIGC2026</a></td>
+      <td>qbitai</td>
+    </tr>
+    <tr id="ev-e015">
+      <td class="ev-id">e015</td>
+      <td><a href="https://www.qbitai.com/2026/05/426819.html" target="_blank" rel="noopener noreferrer">AI原生时代下，让世界适应Agent，而非教AI做人 | 港大黄超@AIGC2026</a></td>
+      <td>qbitai</td>
+    </tr>
+    <tr id="ev-e016">
+      <td class="ev-id">e016</td>
+      <td><a href="https://www.qbitai.com/2026/05/426793.html" target="_blank" rel="noopener noreferrer">从Token无上限到全员Agent：MiniMax的AI Native组织进化实践</a></td>
+      <td>qbitai</td>
+    </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script>
+
+    var dashData = {"wordList":[["research",80],["industry",58],["news",58],["product",40],["launch",40],["quality",21],["agent",21],["policy",21],["human",21],["attack",19],["agents",19],["language",19],["weights",18],["patterns",18],["features",18],["including",18],["become",18],["systems",18],["includes",18],["capabilities",18],["privacy",18],["compression",16],["first",16],["image",16],["local",16],["memory",16],["requirements",16],["enable",16],["while",16],["specific",16],["common",16],["include",16],["writing",16],["analysis",16],["content",16],["consumer",16],["available",16],["month",16],["offerings",16],["focused",16],["plans",16],["professional",16],["creators",16],["beyond",16],["creation",16],["count",16],["performance",16],["security",16],["editing",16],["multiple",16],["interfaces",16],["exploits",16],["chatgpt",16],["extension",16],["openai",16],["files",16],["websites",16],["large",16],["works",16],["browser",16]],"regionLabels":["North America","China / Asia"],"regionData":[12,4],"sentimentData":[8,2,6],"topEvents":[{"title":"1-Bit Bonsai Image 4B Image Generation for Local Devices","summary":"Prism ML has released Bonsai Image 4B, a compact image-generation model family designed to run diffusion inference on local hardware including laptops and phones. The release includes two variants: a 1-bit version using binary weights (1.125 bits per weight) and a ternary version using three-state weights (1.71 bits per weight), with the model being the first in its parameter class to run directly on an iPhone.","sentiment":"positive","impact_level":"high","category":"Product Launch","url":"https://prismml.com/news/bonsai-image-4b"},{"title":"The Website Specification","summary":"A comprehensive platform-agnostic specification documenting technical features every modern website should implement, covering areas from basic HTML to AI agent readiness. The specification maps to widely-accepted standards from WHATWG, W3C, IETF, and WCAG across ten categories including foundations, SEO, accessibility, and performance.","sentiment":"positive","impact_level":"high","category":"Industry News","url":"https://specification.website/"},{"title":"Backpressure is all you need","summary":"The article proposes a third approach to using AI coding agents that balances automation with safety by implementing backpressure mechanisms. Rather than running agents completely unattended or reviewing every minor step, the approach builds validation systems that allow agents to check their own work before human review.","sentiment":"neutral","impact_level":"mid","category":"Research","url":"https://www.lucasfcosta.com/blog/backpressure-is-all-you-need"},{"title":"AI原生时代下，让世界适应Agent，而非教AI做人 | 港大黄超@AIGC2026","summary":"Hong Kong University's Huang Chao argues at AIGC2026 that in the AI-native era, we should adapt the world to agents rather than forcing AI to conform to human workflows. The presentation highlights that CLI (Command Line Interface) is more like the native language of agents.","sentiment":"neutral","impact_level":"mid","category":"Research","url":"https://www.qbitai.com/2026/05/426819.html"},{"title":"Token贵只因你喂给模型的垃圾太多了丨@亚马逊王晓野AIGC2026","summary":"Amazon's Wang Xiaoye discusses token cost optimization at AIGC2026 conference. The presentation focuses on how feeding excessive or irrelevant data to models drives up token costs and explores world models advancing toward multi-agent interactive simulation.","sentiment":"neutral","impact_level":"mid","category":"Research","url":"https://www.qbitai.com/2026/05/426970.html"},{"title":"从Token无上限到全员Agent：MiniMax的AI Native组织进化实践","summary":"MiniMax分享其组织内部AI原生化转型实践，从无限制Token使用到全员Agent应用的演进过程。文章探讨企业如何适应AI技术并将其深度整合到组织运作中。","sentiment":"positive","impact_level":"mid","category":"Industry News","url":"https://www.qbitai.com/2026/05/426793.html"},{"title":"帮Gemini拿下IMO金牌的关键先生，差点成了职业钢琴家","summary":"This article profiles a key figure behind Gemini's achievement of winning an IMO (International Mathematical Olympiad) gold medal, who nearly became a professional pianist. The piece highlights the intersection of diverse talents in AI research leadership.","sentiment":"positive","impact_level":"mid","category":"Industry News","url":"https://www.qbitai.com/2026/05/426706.html"},{"title":"Restartable Sequences","summary":"Restartable sequences (rseq), a Linux 4.18+ feature, enables thread-safe data structures without locks or atomics that scale to many-core processors. On high-core-count systems like AMD's 96-core Threadripper, rseq makes malloc operations up to 43x faster compared to traditional mutex sharding techniques.","sentiment":"positive","impact_level":"mid","category":"Research","url":"https://justine.lol/rseq/"}]};
+
+    // --- Wordcloud ---
+    var wcCanvas = document.getElementById('chart-tags');
+    if (wcCanvas && dashData.wordList.length > 0) {
+      wcCanvas.width = wcCanvas.parentElement.clientWidth || 800;
+      wcCanvas.height = 300;
+      WordCloud(wcCanvas, {
+        list: dashData.wordList,
+        gridSize: 10,
+        weightFactor: 1,
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        color: function() {
+          var palette = ['#4361ee', '#3f37c9', '#7209b7', '#f72585', '#4cc9f0', '#4895ef'];
+          return palette[Math.floor(Math.random() * palette.length)];
+        },
+        backgroundColor: 'white',
+        rotateRatio: 0.25,
+        minSize: 10,
+      });
+    }
+
+    // --- Region pie chart ---
+    var regionCtx = document.getElementById('chart-region');
+    if (regionCtx) {
+      new Chart(regionCtx, {
+        type: 'pie',
+        data: {
+          labels: dashData.regionLabels,
+          datasets: [{
+            data: dashData.regionData,
+            backgroundColor: ['#4361ee', '#f72585', '#4cc9f0', '#7209b7', '#3f37c9'],
+            borderWidth: 2,
+            borderColor: 'white',
+          }],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 } } },
+          },
+        },
+      });
+    }
+
+    // --- Sentiment bar chart ---
+    var sentimentCtx = document.getElementById('chart-sentiment');
+    if (sentimentCtx) {
+      new Chart(sentimentCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Positive', 'Negative', 'Neutral'],
+          datasets: [{
+            label: 'Articles',
+            data: dashData.sentimentData,
+            backgroundColor: ['#d4edda', '#f8d7da', '#e2e3e5'],
+            borderColor: ['#28a745', '#dc3545', '#6c757d'],
+            borderWidth: 2,
+            borderRadius: 6,
+          }],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } },
+          },
+          plugins: { legend: { display: false } },
+        },
+      });
+    }
+
+    // --- Top event cards ---
+    var container = document.getElementById('cards-top-events');
+    if (container) {
+      dashData.topEvents.forEach(function(ev) {
+        var card = document.createElement('div');
+        card.className = 'event-card';
+
+        var header = document.createElement('div');
+        header.className = 'card-header';
+
+        var h3 = document.createElement('h3');
+        h3.textContent = ev.title;
+        header.appendChild(h3);
+
+        var sentBadge = document.createElement('span');
+        sentBadge.className = 'badge badge-' + ev.sentiment;
+        sentBadge.textContent = ev.sentiment;
+        header.appendChild(sentBadge);
+        card.appendChild(header);
+
+        var meta = document.createElement('div');
+        meta.className = 'card-meta';
+        var catSpan = document.createElement('span');
+        catSpan.className = 'card-category';
+        catSpan.textContent = ev.category;
+        meta.appendChild(catSpan);
+        var impactBadge = document.createElement('span');
+        impactBadge.className = 'badge badge-' + ev.impact_level;
+        impactBadge.textContent = ev.impact_level;
+        meta.appendChild(impactBadge);
+        card.appendChild(meta);
+
+        var summary = document.createElement('p');
+        summary.className = 'card-summary';
+        summary.textContent = ev.summary;
+        card.appendChild(summary);
+
+        if (ev.url) {
+          var link = document.createElement('a');
+          link.href = ev.url;
+          link.className = 'card-link';
+          link.textContent = 'Read more →';
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          card.appendChild(link);
+        }
+
+        container.appendChild(card);
+      });
+    }
+  
+  </script>
+</body>
+</html>

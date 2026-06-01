@@ -1,0 +1,86 @@
+[
+  {
+    "id": "item-1",
+    "title": "Chuwi Minibook X: the netbook we deserve",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-2",
+    "title": "New Beam Spring Keyboards",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-3",
+    "title": "The four programming questions from my 1994 Microsoft internship interview (2023)",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-5",
+    "title": "United Airlines 767 returns to Newark after Bluetooth name sparks alert",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-6",
+    "title": "Codex just found a \"workaround\" of not having sudo on my PC",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-10",
+    "title": "Show HN: Streambed – Stream Postgres to Iceberg on S3, Supports Postgres Wire",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-11",
+    "title": "Linux/M68k",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-13",
+    "title": "Unix in East Germany (GDR) (1990)",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-14",
+    "title": "London's Free Roof Terraces",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-18",
+    "title": "Having your insulin pump die while you're on vacation",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-20",
+    "title": "US healthcare still stupidly expensive, with pathetic outcomes, study finds",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-22",
+    "title": "New solar desalination breakthrough makes fresh water without toxic brine",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-23",
+    "title": "The History of \"Prisencolinensinainciusol\"",
+    "source": "HackerNews",
+    "reason": "not_ai_related"
+  },
+  {
+    "id": "item-4",
+    "title": "Creatine raises brain energy levels and slows cognitive decline: study",
+    "source": "HackerNews",
+    "reason": "llm_excluded"
+  }
+]
